@@ -9,6 +9,7 @@ namespace Ordering.System.Api.Validators
         public SupplierValidator()
         {
             ValidateUf();
+            ValidateCnpj();
             ValidateName();
             ValidateSocialReason();
             ValidateEmail();
@@ -51,9 +52,20 @@ namespace Ordering.System.Api.Validators
                 .WithMessage("Campo 'Nome' deve possuir no mínmo 02 eno máximo 100 caracteres.");
 
             RuleFor(x => x.Name)
-                .Must(ValidateWords.Text)
+                .Must(WordsValidator.IsValidText)
                 .When(x => !string.IsNullOrWhiteSpace(x.Name))
                 .WithMessage("Campo 'Nome' aceita apenas letras.");
+        }
+
+        private void ValidateCnpj()
+        {
+            RuleFor(x => x.Cnpj)
+                .NotEmpty()
+                .WithMessage("Campo 'CNPJ' deve ser informado");
+
+            RuleFor(x => x.Cnpj)
+                .Must(CnpjValidator.IsValidCnpj)
+                .WithMessage("CNPJ Inválido!");
         }
 
         private void ValidateUf()

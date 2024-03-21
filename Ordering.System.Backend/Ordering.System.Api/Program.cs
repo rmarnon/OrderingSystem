@@ -1,4 +1,7 @@
-using Microsoft.OpenApi.Models;
+using Ordering.System.Api.Extensions;
+using Ordering.System.Api.Repositories;
+using Ordering.System.Api.Repositories.Data;
+using Ordering.System.Api.Repositories.Interfaces;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,12 +14,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(s =>
 {
-    s.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Ordering System",
-        Version = "v1"
-    });
+    s.SwaggerDoc("v1", new() { Title = "Ordering System", Version = "v1" });
 });
+
+builder.Services.AddDbContext<ApplicationContext>();
+
+builder.Services.IoC();
 
 var app = builder.Build();
 
