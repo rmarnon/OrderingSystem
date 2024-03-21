@@ -1,7 +1,6 @@
+using FluentValidation.AspNetCore;
 using Ordering.System.Api.Extensions;
-using Ordering.System.Api.Repositories;
 using Ordering.System.Api.Repositories.Data;
-using Ordering.System.Api.Repositories.Interfaces;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

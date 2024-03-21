@@ -27,7 +27,7 @@ namespace Ordering.System.Api.Validators
         private void ValidateValue()
         {
             RuleFor(x => x.Value)
-                .Must(x => x >= 0.0)
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("Valor do produto não deve ser um valor negativo");
         }
 
@@ -38,7 +38,7 @@ namespace Ordering.System.Api.Validators
                 .WithMessage("Data de registro do produto deve ser informado");
 
             RuleFor(x => x.RegistrationDate)
-                .Must(x => x.Date <= DateTime.Today)
+                .LessThanOrEqualTo(DateTime.Today)
                 .WithMessage("Data de registro não pode ser uma data futura.");
         }
 

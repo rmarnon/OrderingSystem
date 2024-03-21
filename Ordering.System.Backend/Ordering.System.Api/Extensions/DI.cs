@@ -1,7 +1,10 @@
-﻿using Ordering.System.Api.Repositories;
+﻿using FluentValidation;
+using Ordering.System.Api.Entities;
+using Ordering.System.Api.Repositories;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services;
 using Ordering.System.Api.Services.Interfaces;
+using Ordering.System.Api.Validators;
 
 namespace Ordering.System.Api.Extensions
 {
@@ -16,6 +19,8 @@ namespace Ordering.System.Api.Extensions
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
+
+            services.AddTransient<IValidator<Product>, ProductValidator>();
 
             return services;
         }

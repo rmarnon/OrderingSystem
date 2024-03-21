@@ -21,7 +21,7 @@ namespace Ordering.System.Api.Validators
                 .WithMessage("Data de pedido deve ser informado.");
 
             RuleFor(x => x.RequestDate)
-                .Must(x => x.Date <= DateTime.Today)
+                .LessThanOrEqualTo(DateTime.Today)
                 .WithMessage("Data de pedido não pode ser uma data futura.");
         }
 
@@ -39,7 +39,7 @@ namespace Ordering.System.Api.Validators
         private void ValidateTotalValue()
         {
             RuleFor(x => x.TotalValue)
-                .Must(x => x >= 0.0)
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("Valor total do pedido deve ser maior ou igual a zero.");
         }
 
