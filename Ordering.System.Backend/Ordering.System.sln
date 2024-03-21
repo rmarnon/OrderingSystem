@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.System.Api", "Ordering.System.Api\Ordering.System.Api.csproj", "{6F2F4641-5A17-4128-9173-6DA0BBF9E551}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.System.Models", "Ordering.System.Models\Ordering.System.Models.csproj", "{42279702-AD52-40C0-8F68-F9854354A938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.System.Models", "Ordering.System.Models\Ordering.System.Models.csproj", "{42279702-AD52-40C0-8F68-F9854354A938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
