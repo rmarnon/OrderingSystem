@@ -1,6 +1,6 @@
-﻿using Ordering.System.Models.Enums;
+﻿using Ordering.System.Api.Enums;
 
-namespace Ordering.System.Models.Models
+namespace Ordering.System.Api.Entities
 {
     public class Supplier : Base
     {

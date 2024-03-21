@@ -1,4 +1,4 @@
-﻿namespace Ordering.System.Models.Models
+﻿namespace Ordering.System.Api.Entities
 {
     public class Product : Base
     {

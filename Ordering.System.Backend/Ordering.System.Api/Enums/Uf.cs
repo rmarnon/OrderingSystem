@@ -1,4 +1,4 @@
-﻿namespace Ordering.System.Models.Enums
+﻿namespace Ordering.System.Api.Enums
 {
     public enum Uf
     {
