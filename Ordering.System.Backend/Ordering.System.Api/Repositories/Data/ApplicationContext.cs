@@ -20,5 +20,10 @@ namespace Ordering.System.Api.Repositories.Data
         {
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("WebApiDatabase"));
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
+        }
     }
 }
