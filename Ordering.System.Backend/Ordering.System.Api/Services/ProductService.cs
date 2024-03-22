@@ -15,13 +15,17 @@ namespace Ordering.System.Api.Services
             return await _productRepository.GetProductByIdAsync(id);
         }
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             return await _productRepository.GetProductsAsync();
         }
 
         public async Task<Product> CreateProductAsync(Product product)
         {
+            var exist = await _productRepository.ExistProductByIdAsync(product.Id);
+
+            if (exist) return null;
+
             return await _productRepository.CreateProductAsync(product);
         }
 
@@ -32,12 +36,26 @@ namespace Ordering.System.Api.Services
             if (objectData is null)
                 return null;
 
-            objectData.Code = product.Code;
             objectData.Value = product.Value;
-            objectData.Description = product.Description;
+            objectData.Code = product.Code.Trim();
+            objectData.Description = product.Description.Trim();
             objectData.RegistrationDate = product.RegistrationDate;
 
             return await _productRepository.UpdateProductAsync(objectData);
+        }
+
+        public async Task<Product> DeletProductByIdAsync(Guid id)
+        {
+            var product = await _productRepository.GetProductByIdAsync(id);
+
+            if (product is null) return null;
+
+            return await _productRepository.DeleteProductByIdAsync(product);
+        }
+
+        public async Task<bool> ExistProductAsync(Guid id)
+        {
+            return await _productRepository.ExistProductByIdAsync(id);
         }
     }
 }

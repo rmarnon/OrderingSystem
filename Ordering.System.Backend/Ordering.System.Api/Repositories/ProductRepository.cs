@@ -29,6 +29,23 @@ namespace Ordering.System.Api.Repositories
             }
         }
 
+        public async Task<Product> DeleteProductByIdAsync(Product product)
+        {
+            try
+            {
+                using (_context)
+                {
+                    _context.Entry(product).State = EntityState.Deleted;
+                    await _context.SaveChangesAsync();
+                    return product;
+                }
+            }
+            catch (ApiException e)
+            {
+                return product;
+            }
+        }
+
         public async Task<bool> ExistProductByIdAsync(Guid id)
         {
             return await _context.Products.AnyAsync(p => p.Id == id);

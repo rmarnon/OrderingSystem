@@ -10,9 +10,15 @@ namespace Ordering.System.Api.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService) => _productService = productService;
+
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
         {
-            _productService = productService;
+            var products = await _productService.GetProductsAsync();
+            return products.Any()
+                ? Ok(products)
+                : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -24,21 +30,12 @@ namespace Ordering.System.Api.Controllers
                 : Ok(product);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetProductsAsync();
-            return products.Any()
-                ? Ok(products)
-                : NotFound();
-        }
-
         [HttpPost("create")]
         public async Task<ActionResult<Product>> CreateProduct(Product product)
         {
             var entity = await _productService.CreateProductAsync(product);
             return entity is null
-                ? BadRequest()
+                ? Conflict("Não foi possível cadastrar o produto.")
                 : Ok(product);
         }
 
@@ -49,6 +46,15 @@ namespace Ordering.System.Api.Controllers
             return entity is null
                 ? BadRequest()
                 : Ok(product);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteProduct([FromRoute] Guid id)
+        {
+            var product = await _productService.DeletProductByIdAsync(id);
+            return product is null
+                ? NotFound()
+                : NoContent();
         }
     }
 }
