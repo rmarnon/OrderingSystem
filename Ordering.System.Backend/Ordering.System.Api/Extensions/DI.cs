@@ -20,7 +20,9 @@ namespace Ordering.System.Api.Extensions
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
 
+            services.AddTransient<IValidator<Order>, OrderValidator>();
             services.AddTransient<IValidator<Product>, ProductValidator>();
+            services.AddTransient<IValidator<Supplier>, SupplierValidator>();
 
             return services;
         }

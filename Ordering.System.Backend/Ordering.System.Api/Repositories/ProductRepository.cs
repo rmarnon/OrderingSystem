@@ -25,7 +25,7 @@ namespace Ordering.System.Api.Repositories
             }
             catch (ApiException e)
             {
-                throw new Exception("Falha ao cadastrar o produto.", e);
+                throw new ApiException("Falha ao cadastrar o produto.", e);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Ordering.System.Api.Repositories
             }
             catch (ApiException e)
             {
-                throw new Exception("Falha ao deletar o produto.", e);
+                throw new ApiException("Falha ao deletar o produto.", e);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Ordering.System.Api.Repositories
             }
             catch (ApiException e)
             {
-                throw new Exception("Falha ao atualizar o produto.", e);
+                throw new ApiException("Falha ao atualizar o produto.", e);
             }
         }
     }

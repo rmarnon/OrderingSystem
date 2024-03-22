@@ -68,7 +68,7 @@ namespace Ordering.System.Api.Controllers
         {
             var entity = await _productService.CreateProductAsync(product);
             return entity is null
-                ? Conflict("Não foi possível cadastrar o produto.")
+                ? Conflict("Já eiste um produto cadastradocom esse ID.")
                 : Ok(product);
         }
 
