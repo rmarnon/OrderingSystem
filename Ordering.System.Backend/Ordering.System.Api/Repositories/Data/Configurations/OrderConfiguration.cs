@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ordering.System.Api.Entities;
 
 namespace Ordering.System.Api.Repositories.Data.Configurations
@@ -25,10 +25,6 @@ namespace Ordering.System.Api.Repositories.Data.Configurations
             builder.Property(p => p.RequestDate)
                 .HasDefaultValueSql("NOW()")
                 .IsRequired();
-
-            builder.HasOne(p => p.Supplier)
-                .WithMany(p => p.Orders)
-                .HasForeignKey(p => p.Id);
         }
     }
 }

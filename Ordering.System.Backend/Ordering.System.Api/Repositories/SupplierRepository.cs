@@ -56,6 +56,7 @@ namespace Ordering.System.Api.Repositories
             return await _context
                 .Suppliers
                 .AsQueryable()
+                .Include(x => x.Orders)
                 .AsNoTrackingWithIdentityResolution()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -65,6 +66,7 @@ namespace Ordering.System.Api.Repositories
             return await _context
                 .Suppliers
                 .AsQueryable()
+                .Include(x => x.Orders)
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
         }

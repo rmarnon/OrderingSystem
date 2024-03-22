@@ -56,7 +56,7 @@ namespace Ordering.System.Api.Validators
 
         private void ValidateItems()
         {
-            RuleFor(x => x.Items)
+            RuleFor(x => x.Products)
                .NotEmpty()
                .Must(x => x.Any())
                .WithMessage("Pedidos devem possuir ao menos um produto para serem gerados.");

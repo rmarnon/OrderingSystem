@@ -31,6 +31,10 @@ namespace Ordering.System.Api.Repositories.Data.Configurations
             builder.Property(p => p.Uf)
                 .HasConversion<int>()
                 .IsRequired();
+
+            builder.HasMany(p => p.Orders)
+                .WithOne(p => p.Supplier)
+                .HasForeignKey(p => p.SupplierId);
         }
     }
 }

@@ -7,11 +7,11 @@ namespace Ordering.System.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SuppliertController : ControllerBase
+    public class SupplierController : ControllerBase
     {
         private readonly ISupplierService _supplierService;
 
-        public SuppliertController(ISupplierService supplierService) => _supplierService = supplierService;
+        public SupplierController(ISupplierService supplierService) => _supplierService = supplierService;
 
         /// <summary>
         /// Obtém todos os fornecedores.
@@ -24,7 +24,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Supplier>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetSupplierts()
+        public async Task<IActionResult> GetSuppliers()
         {
             var supplier = await _supplierService.GetSuppliersAsync();
             return supplier.Any()
@@ -44,7 +44,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(Supplier), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetSuppliertById([FromRoute][Required] Guid id)
+        public async Task<IActionResult> GetSupplierById([FromRoute][Required] Guid id)
         {
             var supplier = await _supplierService.GetSupplierByIdAsync(id);
             return supplier is null
@@ -64,7 +64,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(Supplier), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateSuppliert([FromBody][Required] Supplier supplier)
+        public async Task<IActionResult> CreateSupplier([FromBody][Required] Supplier supplier)
         {
             var entity = await _supplierService.CreateSupplierAsync(supplier);
             return entity is null
@@ -86,7 +86,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateSuppliert([FromBody][Required] Supplier product)
+        public async Task<IActionResult> UpdateSupplier([FromBody][Required] Supplier product)
         {
             var entity = await _supplierService.UpdateSupplierAsync(product);
             return entity is null
@@ -105,7 +105,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteSuppliert([FromRoute][Required] Guid id)
+        public async Task<IActionResult> DeleteSupplier([FromRoute][Required] Guid id)
         {
             var supplier = await _supplierService.DeletSupplierByIdAsync(id);
             return supplier is null

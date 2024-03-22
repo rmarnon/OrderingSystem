@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ordering.System.Api.Entities;
 
 namespace Ordering.System.Api.Repositories.Data.Configurations
@@ -15,6 +15,14 @@ namespace Ordering.System.Api.Repositories.Data.Configurations
                 p.OrderId,
                 p.ProductId
             });
+
+            builder.HasOne(p => p.Product)
+                .WithMany(p => p.Orders)
+                .HasForeignKey(p => p.ProductId);
+
+            builder.HasOne(p => p.Order)
+                .WithMany(p => p.Products)
+                .HasForeignKey(p => p.OrderId);
         }
     }
 }

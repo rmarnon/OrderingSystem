@@ -9,6 +9,6 @@ namespace Ordering.System.Api.Entities
         public string Cnpj { get; set; }
         public string Email { get; set; }
         public string SocialReason { get; set; }
-        public List<Order> Orders { get; set; } = new();
+        public virtual IEnumerable<Order> Orders { get; set; }
     }
 }
