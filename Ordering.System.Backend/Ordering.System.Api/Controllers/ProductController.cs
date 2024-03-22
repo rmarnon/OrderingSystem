@@ -64,7 +64,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(Product), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody][Required] Product product)
+        public async Task<IActionResult> CreateProduct([FromBody][Required] Product product)
         {
             var entity = await _productService.CreateProductAsync(product);
             return entity is null
@@ -86,7 +86,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Product>> UpdateProduct([FromBody][Required] Product product)
+        public async Task<IActionResult> UpdateProduct([FromBody][Required] Product product)
         {
             var entity = await _productService.UpdateProductAsync(product);
             return entity is null
