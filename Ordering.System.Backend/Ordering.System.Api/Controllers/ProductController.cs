@@ -107,7 +107,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteProduct([FromRoute][Required] Guid id)
         {
-            var product = await _productService.DeletProductByIdAsync(id);
+            var product = await _productService.DeleteProductByIdAsync(id);
             return product is null
                 ? NotFound()
                 : NoContent();

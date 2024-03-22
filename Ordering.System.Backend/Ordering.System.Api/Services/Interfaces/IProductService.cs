@@ -9,6 +9,6 @@ namespace Ordering.System.Api.Services.Interfaces
         Task<Product> CreateProductAsync(Product product);
         Task<Product> UpdateProductAsync(Product product);
         Task<bool> ExistProductAsync(Guid id);
-        Task<Product> DeletProductByIdAsync(Guid id);
+        Task<Product> DeleteProductByIdAsync(Guid id);
     }
 }

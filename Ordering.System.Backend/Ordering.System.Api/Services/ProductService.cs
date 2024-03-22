@@ -44,13 +44,13 @@ namespace Ordering.System.Api.Services
             return await _productRepository.UpdateProductAsync(productData);
         }
 
-        public async Task<Product> DeletProductByIdAsync(Guid id)
+        public async Task<Product> DeleteProductByIdAsync(Guid id)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
 
             if (product is null) return null;
 
-            return await _productRepository.DeleteProductByIdAsync(product);
+            return await _productRepository.DeleteProductAsync(product);
         }
 
         public async Task<bool> ExistProductAsync(Guid id)

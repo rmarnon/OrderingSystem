@@ -14,5 +14,25 @@ namespace Ordering.System.Tests.Mocks
                 RegistrationDate = new DateTime(1982, 04, 29)
             };
         }
+
+        internal static Product GetInvalidProduct()
+        {
+            return new()
+            {
+                Code = string.Empty,
+                Description = string.Empty,
+                Value = -3.14,
+                RegistrationDate = DateTime.Today.AddDays(1)
+            };
+        }
+
+        internal static Product GetUpdatedProduct(Product product)
+        {
+            product.Code = "abc";
+            product.Value = 79.99;
+            product.Description = "other description";
+            product.RegistrationDate = DateTime.Now.AddDays(-5);
+            return product;
+        }
     }
 }

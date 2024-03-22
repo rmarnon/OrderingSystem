@@ -9,6 +9,6 @@ namespace Ordering.System.Api.Repositories.Interfaces
         Task<Order> CreateOrderAsync(Order order);
         Task<Order> UpdateOrderAsync(Order order);
         Task<bool> ExistOrderByIdAsync(Guid id);
-        Task<Order> DeleteOrderByIdAsync(Order order);
+        Task<Order> DeleteOrderAsync(Order order);
     }
 }

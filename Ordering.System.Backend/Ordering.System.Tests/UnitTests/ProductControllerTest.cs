@@ -9,7 +9,7 @@ using Ordering.System.Tests.Mocks;
 
 namespace Ordering.System.Tests.UnitTests
 {
-    public class AlunoTest
+    public class ProductControllerTest
     {
         [Fact]
         public void Should_Validate_Product()
@@ -28,11 +28,7 @@ namespace Ordering.System.Tests.UnitTests
         public void Should_Fail_To_Validate_Product()
         {
             //Arrange
-            var product = ProductMock.GetValidProduct();
-            product.Code = string.Empty;
-            product.Description = string.Empty;
-            product.Value = -3.14;
-            product.RegistrationDate = DateTime.Today.AddDays(1);
+            var product = ProductMock.GetInvalidProduct();
 
             //Act
             var result = new ProductValidator().Validate(product);
@@ -46,11 +42,12 @@ namespace Ordering.System.Tests.UnitTests
         public async Task Should_Return_Product_By_Id()
         {
             var product = ProductMock.GetValidProduct();
-            var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service =>
+            var service = new Mock<IProductService>();
+
+            service.Setup(service =>
                 service.GetProductByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product);
 
-            var controller = new ProductController(serviceMock.Object);
+            var controller = new ProductController(service.Object);
 
             // Act
             var result = await controller.GetProductById(Guid.NewGuid());
@@ -66,13 +63,12 @@ namespace Ordering.System.Tests.UnitTests
         {
             var product1 = ProductMock.GetValidProduct();
             var product2 = ProductMock.GetValidProduct();
-
             var products = new List<Product>() { product1, product2 };
 
-            var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service => service.GetProductsAsync()).ReturnsAsync(products);
+            var service = new Mock<IProductService>();
+            service.Setup(service => service.GetProductsAsync()).ReturnsAsync(products);
 
-            var controller = new ProductController(serviceMock.Object);
+            var controller = new ProductController(service.Object);
 
             // Act
             var result = await controller.GetProducts();
@@ -88,11 +84,13 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
-            var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service =>
-                service.CreateProductAsync(It.IsAny<Product>())).ReturnsAsync(product);
+            var service = new Mock<IProductService>();
 
-            var controller = new ProductController(serviceMock.Object);
+            service.Setup(service =>
+                service.CreateProductAsync(It.IsAny<Product>()))
+                .ReturnsAsync(product);
+
+            var controller = new ProductController(service.Object);
 
             // Act
             var result = await controller.CreateProduct(product);
@@ -104,15 +102,18 @@ namespace Ordering.System.Tests.UnitTests
         }
 
         [Fact]
-        public async Task Should_Update_New_Product()
+        public async Task Should_Update_Product()
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
-            var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service =>
-                service.CreateProductAsync(It.IsAny<Product>())).ReturnsAsync(product);
+            var updatedProduct = ProductMock.GetUpdatedProduct(product);
+            var service = new Mock<IProductService>();
 
-            var controller = new ProductController(serviceMock.Object);
+            service.Setup(service =>
+                service.CreateProductAsync(product))
+                .ReturnsAsync(updatedProduct);
+
+            var controller = new ProductController(service.Object);
 
             // Act
             var result = await controller.CreateProduct(product);
@@ -128,11 +129,13 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
-            var serviceMock = new Mock<IProductService>();
-            serviceMock.Setup(service =>
-                service.DeletProductByIdAsync(It.IsAny<Guid>())).ReturnsAsync(product);
+            var service = new Mock<IProductService>();
 
-            var controller = new ProductController(serviceMock.Object);
+            service.Setup(service =>
+                service.DeleteProductByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(product);
+
+            var controller = new ProductController(service.Object);
 
             // Act
             var result = await controller.DeleteProduct(Guid.NewGuid());

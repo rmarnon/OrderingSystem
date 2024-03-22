@@ -29,7 +29,7 @@ namespace Ordering.System.Api.Repositories
             }
         }
 
-        public async Task<Product> DeleteProductByIdAsync(Product product)
+        public async Task<Product> DeleteProductAsync(Product product)
         {
             try
             {

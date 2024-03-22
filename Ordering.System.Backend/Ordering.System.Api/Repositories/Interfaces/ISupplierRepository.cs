@@ -9,6 +9,6 @@ namespace Ordering.System.Api.Repositories.Interfaces
         Task<Supplier> CreateSupplierAsync(Supplier supplier);
         Task<Supplier> UpdateSupplierAsync(Supplier supplier);
         Task<bool> ExistSupplierByIdAsync(Guid id);
-        Task<Supplier> DeleteSupplierByIdAsync(Supplier supplier);
+        Task<Supplier> DeleteSupplierAsync(Supplier supplier);
     }
 }

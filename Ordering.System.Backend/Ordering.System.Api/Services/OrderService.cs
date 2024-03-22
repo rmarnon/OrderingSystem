@@ -51,7 +51,7 @@ namespace Ordering.System.Api.Services
 
             if (order is null) return null;
 
-            return await _orderRepository.DeleteOrderByIdAsync(order);
+            return await _orderRepository.DeleteOrderAsync(order);
         }
 
         public async Task<bool> ExistOrderAsync(Guid id)

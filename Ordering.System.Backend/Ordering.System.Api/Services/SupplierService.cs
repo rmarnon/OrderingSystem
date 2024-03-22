@@ -51,7 +51,7 @@ namespace Ordering.System.Api.Services
 
             if (supplier is null) return null;
 
-            return await _supplierRepository.DeleteSupplierByIdAsync(supplier);
+            return await _supplierRepository.DeleteSupplierAsync(supplier);
         }
 
         public async Task<bool> ExistSupplierAsync(Guid id)
