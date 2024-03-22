@@ -68,7 +68,7 @@ namespace Ordering.System.Api.Controllers
         {
             var entity = await _supplierService.CreateSupplierAsync(supplier);
             return entity is null
-                ? Conflict("Já eiste um fornecedor cadastradocom esse ID.")
+                ? Conflict("Já eiste um fornecedor cadastrado com esse ID.")
                 : Ok(supplier);
         }
 

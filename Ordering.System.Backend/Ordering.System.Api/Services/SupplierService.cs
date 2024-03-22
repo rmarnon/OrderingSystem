@@ -31,18 +31,18 @@ namespace Ordering.System.Api.Services
 
         public async Task<Supplier> UpdateSupplierAsync(Supplier supplier)
         {
-            var objectData = await _supplierRepository.GetSupplierByIdAsync(supplier.Id);
+            var supplierData = await _supplierRepository.GetSupplierByIdAsync(supplier.Id);
 
-            if (objectData is null)
+            if (supplierData is null)
                 return null;
 
-            objectData.Uf = supplier.Uf;
-            objectData.Name = supplier.Name;
-            objectData.Cnpj = supplier.Cnpj;
-            objectData.Email = supplier.Email.Trim();
-            objectData.SocialReason = supplier.SocialReason.Trim();
+            supplierData.Uf = supplier.Uf;
+            supplierData.Name = supplier.Name;
+            supplierData.Cnpj = supplier.Cnpj;
+            supplierData.Email = supplier.Email.Trim();
+            supplierData.SocialReason = supplier.SocialReason.Trim();
 
-            return await _supplierRepository.UpdateSupplierAsync(objectData);
+            return await _supplierRepository.UpdateSupplierAsync(supplierData);
         }
 
         public async Task<Supplier> DeletSupplierByIdAsync(Guid id)

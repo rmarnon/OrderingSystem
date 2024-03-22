@@ -31,17 +31,17 @@ namespace Ordering.System.Api.Services
 
         public async Task<Product> UpdateProductAsync(Product product)
         {
-            var objectData = await _productRepository.GetProductByIdAsync(product.Id);
+            var productData = await _productRepository.GetProductByIdAsync(product.Id);
 
-            if (objectData is null)
+            if (productData is null)
                 return null;
 
-            objectData.Value = product.Value;
-            objectData.Code = product.Code.Trim();
-            objectData.Description = product.Description.Trim();
-            objectData.RegistrationDate = product.RegistrationDate;
+            productData.Value = product.Value;
+            productData.Code = product.Code.Trim();
+            productData.Description = product.Description.Trim();
+            productData.RegistrationDate = product.RegistrationDate;
 
-            return await _productRepository.UpdateProductAsync(objectData);
+            return await _productRepository.UpdateProductAsync(productData);
         }
 
         public async Task<Product> DeletProductByIdAsync(Guid id)
