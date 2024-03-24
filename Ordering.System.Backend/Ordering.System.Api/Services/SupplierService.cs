@@ -15,9 +15,9 @@ namespace Ordering.System.Api.Services
             return await _supplierRepository.GetSupplierByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Supplier>> GetSuppliersAsync()
+        public async Task<IEnumerable<Supplier>> GetSuppliersAsync(Pagination pagination)
         {
-            return await _supplierRepository.GetSuppliersAsync();
+            return await _supplierRepository.GetSuppliersAsync(pagination);
         }
 
         public async Task<Supplier> CreateSupplierAsync(Supplier supplier)

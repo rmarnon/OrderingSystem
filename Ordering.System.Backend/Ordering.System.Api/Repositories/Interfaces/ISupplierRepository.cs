@@ -4,7 +4,7 @@ namespace Ordering.System.Api.Repositories.Interfaces
 {
     public interface ISupplierRepository
     {
-        Task<List<Supplier>> GetSuppliersAsync();
+        Task<List<Supplier>> GetSuppliersAsync(Pagination pagination);
         Task<Supplier> GetSupplierByIdAsync(Guid id);
         Task<Supplier> CreateSupplierAsync(Supplier supplier);
         Task<Supplier> UpdateSupplierAsync(Supplier supplier);

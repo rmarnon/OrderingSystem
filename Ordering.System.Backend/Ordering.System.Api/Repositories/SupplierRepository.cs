@@ -61,13 +61,15 @@ namespace Ordering.System.Api.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Supplier>> GetSuppliersAsync()
+        public async Task<List<Supplier>> GetSuppliersAsync(Pagination pagination)
         {
             return await _context
                 .Suppliers
                 .AsQueryable()
                 .Include(x => x.Orders)
                 .AsNoTrackingWithIdentityResolution()
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
                 .ToListAsync();
         }
 

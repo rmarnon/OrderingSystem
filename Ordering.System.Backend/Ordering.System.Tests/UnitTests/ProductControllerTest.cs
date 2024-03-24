@@ -61,17 +61,18 @@ namespace Ordering.System.Tests.UnitTests
         [Fact]
         public async Task Should_Return_Products()
         {
+            var pagination = new Pagination() { PageNumber = 1, PageSize = 5 };
             var product1 = ProductMock.GetValidProduct();
             var product2 = ProductMock.GetValidProduct();
             var products = new List<Product>() { product1, product2 };
 
             var service = new Mock<IProductService>();
-            service.Setup(service => service.GetProductsAsync()).ReturnsAsync(products);
+            service.Setup(service => service.GetProductsAsync(It.IsAny<Pagination>())).ReturnsAsync(products);
 
             var controller = new ProductController(service.Object);
 
             // Act
-            var result = await controller.GetProducts();
+            var result = await controller.GetProducts(pagination);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

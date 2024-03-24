@@ -4,7 +4,7 @@ namespace Ordering.System.Api.Repositories.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<List<Order>> GetOrdersAsync();
+        Task<List<Order>> GetOrdersAsync(Pagination pagination);
         Task<Order> GetOrderByIdAsync(Guid id);
         Task<Order> CreateOrderAsync(Order order);
         Task<Order> UpdateOrderAsync(Order order);

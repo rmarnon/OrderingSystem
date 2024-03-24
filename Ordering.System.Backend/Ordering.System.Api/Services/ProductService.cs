@@ -15,9 +15,9 @@ namespace Ordering.System.Api.Services
             return await _productRepository.GetProductByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync(Pagination pagination)
         {
-            return await _productRepository.GetProductsAsync();
+            return await _productRepository.GetProductsAsync(pagination);
         }
 
         public async Task<Product> CreateProductAsync(Product product)

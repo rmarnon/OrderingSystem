@@ -60,12 +60,14 @@ namespace Ordering.System.Api.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<List<Order>> GetOrdersAsync()
+        public async Task<List<Order>> GetOrdersAsync(Pagination pagination)
         {
             return await _context
                 .Orders
                 .AsQueryable()
                 .AsNoTrackingWithIdentityResolution()
+                .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+                .Take(pagination.PageSize)
                 .ToListAsync();
         }
 

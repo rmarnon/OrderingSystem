@@ -17,6 +17,7 @@ namespace Ordering.System.Api.Controllers
         /// Obtém todos os pedidos.
         /// </summary>
         /// <returns>Uma lista de todos os pedidos.</returns>
+        /// <param name="pagination">Parâmetros de paginação (número da página e tamanho da página).</param>
         /// <response code="200">Retorna a lista de pedidos.</response>
         /// <response code="404">Se não houverem registos de pedidos.</response>
         /// <response code="500">Se ocorrer um erro interno do servidor.</response>
@@ -24,9 +25,9 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Order>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetOrders()
+        public async Task<IActionResult> GetOrders([FromQuery] Pagination pagination)
         {
-            var products = await _orderService.GetOrdersAsync();
+            var products = await _orderService.GetOrdersAsync(pagination);
             return products.Any()
                 ? Ok(products)
                 : NotFound();

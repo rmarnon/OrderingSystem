@@ -17,6 +17,7 @@ namespace Ordering.System.Api.Controllers
         /// Obtém todos os fornecedores.
         /// </summary>
         /// <returns>Uma lista de todos os fornecedores.</returns>
+        /// <param name="pagination">Parâmetros de paginação (número da página e tamanho da página).</param>
         /// <response code="200">Retorna a lista de fornecedores.</response>
         /// <response code="404">Se não houverem registos de fornecedores.</response>
         /// <response code="500">Se ocorrer um erro interno do servidor.</response>
@@ -24,9 +25,9 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Supplier>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetSuppliers()
+        public async Task<IActionResult> GetSuppliers([FromQuery] Pagination pagination)
         {
-            var supplier = await _supplierService.GetSuppliersAsync();
+            var supplier = await _supplierService.GetSuppliersAsync(pagination);
             return supplier.Any()
                 ? Ok(supplier)
                 : NotFound();
