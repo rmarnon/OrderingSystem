@@ -25,7 +25,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Supplier>), 200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetSuppliers([FromQuery] Pagination pagination)
+        public async Task<IActionResult> GetSuppliers([FromQuery][Required] Pagination pagination)
         {
             var supplier = await _supplierService.GetSuppliersAsync(pagination);
             return supplier.Any()
