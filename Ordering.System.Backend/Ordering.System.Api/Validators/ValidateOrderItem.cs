@@ -24,7 +24,7 @@ namespace Ordering.System.Api.Validators
 
         private void ValidatePrice()
         {
-            RuleFor(x => x.Price)
+            RuleFor(x => x.SubTotal)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Valor total do item não deve ser um valor negativo");
         }

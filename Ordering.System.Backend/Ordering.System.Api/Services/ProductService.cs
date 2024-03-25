@@ -1,4 +1,7 @@
-﻿using Ordering.System.Api.Entities;
+﻿using AutoMapper;
+using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Entities;
+using Ordering.System.Api.Mappings;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services.Interfaces;
 
@@ -6,18 +9,25 @@ namespace Ordering.System.Api.Services
 {
     public class ProductService : IProductService
     {
+        private readonly IMapper _mapper;
         private readonly IProductRepository _productRepository;
 
-        public ProductService(IProductRepository productRepository) => _productRepository = productRepository;
-
-        public async Task<Product> GetProductByIdAsync(Guid id)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
-            return await _productRepository.GetProductByIdAsync(id);
+            _mapper = mapper;
+            _productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync(Pagination pagination)
+        public async Task<ProductDto> GetProductByIdAsync(Guid id)
         {
-            return await _productRepository.GetProductsAsync(pagination);
+            return await _productRepository.GetProductByIdAsync(id)
+                .ContinueWith(task => _mapper.Map<ProductDto>(task.Result));
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync(Pagination pagination)
+        {
+            return await _productRepository.GetProductsAsync(pagination)
+                .ContinueWith(task => _mapper.Map<IEnumerable<ProductDto>>(task.Result));
         }
 
         public async Task<Product> CreateProductAsync(Product product)

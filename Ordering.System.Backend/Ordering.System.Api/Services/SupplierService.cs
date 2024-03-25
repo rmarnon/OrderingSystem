@@ -1,4 +1,7 @@
-﻿using Ordering.System.Api.Entities;
+﻿using AutoMapper;
+using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Entities;
+using Ordering.System.Api.Mappings;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services.Interfaces;
 
@@ -6,18 +9,25 @@ namespace Ordering.System.Api.Services
 {
     public class SupplierService : ISupplierService
     {
+        private readonly IMapper _mapper;
         private readonly ISupplierRepository _supplierRepository;
 
-        public SupplierService(ISupplierRepository productRepository) => _supplierRepository = productRepository;
-
-        public async Task<Supplier> GetSupplierByIdAsync(Guid id)
+        public SupplierService(ISupplierRepository productRepository, IMapper mapper)
         {
-            return await _supplierRepository.GetSupplierByIdAsync(id);
+            _mapper = mapper;
+            _supplierRepository = productRepository;
         }
 
-        public async Task<IEnumerable<Supplier>> GetSuppliersAsync(Pagination pagination)
+        public async Task<SupplierDto> GetSupplierByIdAsync(Guid id)
         {
-            return await _supplierRepository.GetSuppliersAsync(pagination);
+            return await _supplierRepository.GetSupplierByIdAsync(id)
+                .ContinueWith(task => _mapper.Map<SupplierDto>(task.Result));
+        }
+
+        public async Task<IEnumerable<SupplierDto>> GetSuppliersAsync(Pagination pagination)
+        {
+            return await _supplierRepository.GetSuppliersAsync(pagination)
+                .ContinueWith(task => _mapper.Map<IEnumerable<SupplierDto>>(task.Result));
         }
 
         public async Task<Supplier> CreateSupplierAsync(Supplier supplier)

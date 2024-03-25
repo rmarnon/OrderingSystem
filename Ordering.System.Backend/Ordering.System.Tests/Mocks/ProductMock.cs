@@ -1,4 +1,5 @@
-﻿using Ordering.System.Api.Entities;
+﻿using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Entities;
 
 namespace Ordering.System.Tests.Mocks
 {
@@ -23,6 +24,17 @@ namespace Ordering.System.Tests.Mocks
                 Description = string.Empty,
                 Value = -3.14,
                 RegistrationDate = DateTime.Today.AddDays(1)
+            };
+        }
+
+        internal static ProductDto GetValidProductsDto()
+        {
+            return new()
+            {
+                Code = "xyz",
+                Value = 37.99,
+                Description = "some description",
+                RegistrationDate = DateTime.Today.AddDays(-1)
             };
         }
 

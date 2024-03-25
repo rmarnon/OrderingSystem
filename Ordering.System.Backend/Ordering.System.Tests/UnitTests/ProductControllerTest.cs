@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Ordering.System.Api.Controllers;
+using Ordering.System.Api.Dtos;
 using Ordering.System.Api.Entities;
 using Ordering.System.Api.Services.Interfaces;
 using Ordering.System.Api.Validators;
@@ -41,7 +42,7 @@ namespace Ordering.System.Tests.UnitTests
         [Fact]
         public async Task Should_Return_Product_By_Id()
         {
-            var product = ProductMock.GetValidProduct();
+            var product = ProductMock.GetValidProductsDto();
             var service = new Mock<IProductService>();
 
             service.Setup(service =>
@@ -55,16 +56,16 @@ namespace Ordering.System.Tests.UnitTests
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
-            okResult.Value.Should().BeOfType<Product>();
+            okResult.Value.Should().BeOfType<ProductDto>();
         }
 
         [Fact]
         public async Task Should_Return_Products()
         {
             var pagination = new Pagination() { PageNumber = 1, PageSize = 5 };
-            var product1 = ProductMock.GetValidProduct();
-            var product2 = ProductMock.GetValidProduct();
-            var products = new List<Product>() { product1, product2 };
+            var product1 = ProductMock.GetValidProductsDto();
+            var product2 = ProductMock.GetValidProductsDto();
+            var products = new List<ProductDto>() { product1, product2 };
 
             var service = new Mock<IProductService>();
             service.Setup(service => service.GetProductsAsync(It.IsAny<Pagination>())).ReturnsAsync(products);

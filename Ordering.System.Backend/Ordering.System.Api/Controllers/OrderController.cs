@@ -27,9 +27,9 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetOrders([FromQuery][Required] Pagination pagination)
         {
-            var products = await _orderService.GetOrdersAsync(pagination);
-            return products.Any()
-                ? Ok(products)
+            var orders = await _orderService.GetOrdersAsync(pagination);
+            return orders.Any()
+                ? Ok(orders)
                 : NotFound();
         }
 

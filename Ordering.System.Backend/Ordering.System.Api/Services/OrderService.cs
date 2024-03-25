@@ -1,4 +1,6 @@
-﻿using Ordering.System.Api.Entities;
+﻿using AutoMapper;
+using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Entities;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services.Interfaces;
 
@@ -6,18 +8,25 @@ namespace Ordering.System.Api.Services
 {
     public class OrderService : IOrderService
     {
+        private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderService(IOrderRepository orderRepository) => _orderRepository = orderRepository;
-
-        public async Task<Order> GetOrderByIdAsync(Guid id)
+        public OrderService(IOrderRepository orderRepository, IMapper mapper)
         {
-            return await _orderRepository.GetOrderByIdAsync(id);
+            _mapper = mapper;
+            _orderRepository = orderRepository;
         }
 
-        public async Task<IEnumerable<Order>> GetOrdersAsync(Pagination pagination)
+        public async Task<OrderDto> GetOrderByIdAsync(Guid id)
         {
-            return await _orderRepository.GetOrdersAsync(pagination);
+            return await _orderRepository.GetOrderByIdAsync(id)
+                .ContinueWith(task => _mapper.Map<OrderDto>(task.Result));
+        }
+
+        public async Task<IEnumerable<OrderDto>> GetOrdersAsync(Pagination pagination)
+        {
+            return await _orderRepository.GetOrdersAsync(pagination)
+                .ContinueWith(task => _mapper.Map<IEnumerable<OrderDto>>(task.Result));
         }
 
         public async Task<Order> CreateOrderAsync(Order order)
@@ -38,8 +47,6 @@ namespace Ordering.System.Api.Services
 
             orderData.RequestDate = order.RequestDate;
             orderData.Code = order.Code.Trim();
-            orderData.Quantity = order.Quantity;
-            orderData.TotalValue = order.TotalValue;
             orderData.Supplier = order.Supplier;
 
             return await _orderRepository.UpdateOrderAsync(orderData);

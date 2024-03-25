@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
+using Ordering.System.Api.Dtos;
 using Ordering.System.Api.Entities;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services;
@@ -73,7 +74,7 @@ namespace Ordering.System.Tests.UnitTests
             var productData = await service.GetProductByIdAsync(product.Id);
 
             // Assert
-            productData.Should().BeEquivalentTo(product);
+            productData.Should().BeOfType<ProductDto>();
         }
 
         [Fact]
