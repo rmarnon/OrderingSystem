@@ -4,7 +4,7 @@ namespace Ordering.System.Api.Models
 {
     public class SupplierInputModel
     {
-        public Guid Id { get; set; } = Guid.Empty;
+        public Guid Id { get; init; } = Guid.Empty;
         public Uf Uf { get; init; }
         public string Name { get; init; }
         public string Cnpj { get; init; }

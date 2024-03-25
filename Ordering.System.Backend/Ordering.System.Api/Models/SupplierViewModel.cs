@@ -1,6 +1,4 @@
-﻿using Ordering.System.Api.Enums;
-
-namespace Ordering.System.Api.Models
+﻿namespace Ordering.System.Api.Models
 {
     public class SupplierViewModel
     {

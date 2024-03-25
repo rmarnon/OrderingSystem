@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentAssertions;
 using Moq;
-using Ordering.System.Api.Models;
 using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services;
 using Ordering.System.Tests.Mocks;
@@ -16,6 +16,7 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
+            var inputProduct = ProductMock.GetValidInputProduct();
             var repository = new Mock<IProductRepository>();
             var mapper = new Mock<IMapper>();
 
@@ -23,10 +24,16 @@ namespace Ordering.System.Tests.UnitTests
                 repo.CreateProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(product);
 
+            repository.Setup(repo =>
+               repo.ExistProductByIdAsync(It.IsAny<Guid>()))
+               .ReturnsAsync(false);
+
+            mapper.Setup(mapper => mapper.Map<Product>(inputProduct)).Returns(product);
+
             var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
-            var productData = await service.CreateProductAsync(product);
+            var productData = await service.CreateProductAsync(inputProduct);
 
             // Assert
             productData.Should().Be(product);
@@ -38,22 +45,25 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
+            var inputProduct = ProductMock.GetValidInputProduct();
             var updatedProduct = ProductMock.GetUpdatedProduct(product);
             var repository = new Mock<IProductRepository>();
             var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
-               repo.GetProductByIdAsync(It.IsAny<Guid>()))
-               .ReturnsAsync(product);
+               repo.ExistProductByIdAsync(It.IsAny<Guid>()))
+               .ReturnsAsync(true);
 
             repository.Setup(repo =>
                 repo.UpdateProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(updatedProduct);
 
+            mapper.Setup(mapper => mapper.Map<Product>(inputProduct)).Returns(product);
+
             var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
-            var productData = await service.UpdateProductAsync(product);
+            var productData = await service.UpdateProductAsync(inputProduct);
 
             // Assert
             productData.Should().Be(updatedProduct);

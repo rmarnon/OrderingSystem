@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Ordering.System.Api.Controllers;
-using Ordering.System.Api.Models;
 using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Services.Interfaces;
 using Ordering.System.Api.Validators;
 using Ordering.System.Tests.Mocks;
@@ -16,7 +16,7 @@ namespace Ordering.System.Tests.UnitTests
         public void Should_Validate_Product()
         {
             //Arrange
-            var product = ProductMock.GetValidProduct();
+            var product = ProductMock.GetValidInputProduct();
 
             //Act
             var result = new ProductValidator().Validate(product);
@@ -86,21 +86,22 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
+            var inputProduct = ProductMock.GetValidInputProduct();
             var service = new Mock<IProductService>();
 
             service.Setup(service =>
-                service.CreateProductAsync(It.IsAny<Product>()))
+                service.CreateProductAsync(It.IsAny<ProductInputModel>()))
                 .ReturnsAsync(product);
 
             var controller = new ProductController(service.Object);
 
             // Act
-            var result = await controller.CreateProduct(product);
+            var result = await controller.CreateProduct(inputProduct);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
-            okResult.Value.Should().BeOfType<Product>();
+            okResult.Value.Should().BeOfType<ProductInputModel>();
         }
 
         [Fact]
@@ -108,22 +109,23 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
+            var inputProduct = ProductMock.GetValidInputProduct();
             var updatedProduct = ProductMock.GetUpdatedProduct(product);
             var service = new Mock<IProductService>();
 
             service.Setup(service =>
-                service.CreateProductAsync(product))
+                service.CreateProductAsync(It.IsAny<ProductInputModel>()))
                 .ReturnsAsync(updatedProduct);
 
             var controller = new ProductController(service.Object);
 
             // Act
-            var result = await controller.CreateProduct(product);
+            var result = await controller.CreateProduct(inputProduct);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
-            okResult.Value.Should().BeOfType<Product>();
+            okResult.Value.Should().BeOfType<ProductInputModel>();
         }
 
         [Fact]

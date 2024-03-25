@@ -16,7 +16,7 @@ namespace Ordering.System.Tests.Mocks
             };
         }
 
-        internal static Product GetInvalidProduct()
+        internal static ProductInputModel GetInvalidProduct()
         {
             return new()
             {
@@ -45,6 +45,17 @@ namespace Ordering.System.Tests.Mocks
             product.Description = "other description";
             product.RegistrationDate = DateTime.Now.AddDays(-5);
             return product;
+        }
+
+        internal static ProductInputModel GetValidInputProduct()
+        {
+            return new()
+            {
+                Code = "xyz",
+                Value = 37.99,
+                Description = "some description",
+                RegistrationDate = new DateTime(1982, 04, 29)
+            };
         }
     }
 }

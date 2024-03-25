@@ -66,6 +66,8 @@ namespace Ordering.System.Api.Repositories
                 .Orders
                 .AsQueryable()
                 .AsNoTrackingWithIdentityResolution()
+                .Include(x => x.Supplier)
+                .Include(x => x.Items).ThenInclude(y => y.Product)
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
                 .ToListAsync();
