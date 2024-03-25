@@ -7,6 +7,6 @@
         public double TotalValue { get; init; }
         public DateTime RequestDate { get; init; }
         public SupplierViewModel Supplier { get; init; }
-        public virtual IEnumerable<ItemViewModel> Items { get; set; }
+        public virtual IEnumerable<ItemViewModel> Items { get; init; }
     }
 }

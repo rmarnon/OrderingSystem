@@ -57,22 +57,24 @@ namespace Ordering.System.Api.Repositories
                 .Suppliers
                 .AsQueryable()
                 .AsNoTrackingWithIdentityResolution()
-                .Include(x => x.Orders).ThenInclude(y => y.Items)
+                .Include(x => x.Orders)
+                    .ThenInclude(y => y.Items)
+                    .ThenInclude(z => z.Product)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Supplier>> GetSuppliersAsync(Pagination pagination)
         {
-            var supplier = await _context
+            return await _context
                 .Suppliers
                 .AsQueryable()
                 .AsNoTrackingWithIdentityResolution()
-                .Include(x => x.Orders).ThenInclude(y => y.Items)
+                .Include(x => x.Orders)
+                    .ThenInclude(y => y.Items)
+                    .ThenInclude(z => z.Product)
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
                 .ToListAsync();
-
-            return supplier;
         }
 
         public async Task<Supplier> UpdateSupplierAsync(Supplier supplier)

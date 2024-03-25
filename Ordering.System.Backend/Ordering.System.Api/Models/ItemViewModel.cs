@@ -4,8 +4,8 @@ namespace Ordering.System.Api.Models
 {
     public class ItemViewModel
     {
-        public uint Quantity { get; set; }
-        public double SubTotal { get; set; }
-        public virtual ProductViewModel Product { get; set; }
+        public uint Quantity { get; init; }
+        public double SubTotal { get; init; }
+        public virtual ProductViewModel Product { get; init; }
     }
 }

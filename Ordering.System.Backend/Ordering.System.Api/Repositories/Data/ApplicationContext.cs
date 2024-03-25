@@ -12,7 +12,6 @@ namespace Ordering.System.Api.Repositories.Data
         }
 
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> Items { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
 
