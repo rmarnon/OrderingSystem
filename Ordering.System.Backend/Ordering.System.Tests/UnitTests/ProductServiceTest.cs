@@ -1,6 +1,7 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using Moq;
-using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Entities;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services;
@@ -16,12 +17,13 @@ namespace Ordering.System.Tests.UnitTests
             // Arrange
             var product = ProductMock.GetValidProduct();
             var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
                 repo.CreateProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(product);
 
-            var service = new ProductService(repository.Object);
+            var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
             var productData = await service.CreateProductAsync(product);
@@ -38,6 +40,7 @@ namespace Ordering.System.Tests.UnitTests
             var product = ProductMock.GetValidProduct();
             var updatedProduct = ProductMock.GetUpdatedProduct(product);
             var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
                repo.GetProductByIdAsync(It.IsAny<Guid>()))
@@ -47,7 +50,7 @@ namespace Ordering.System.Tests.UnitTests
                 repo.UpdateProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(updatedProduct);
 
-            var service = new ProductService(repository.Object);
+            var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
             var productData = await service.UpdateProductAsync(product);
@@ -62,19 +65,52 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var product = ProductMock.GetValidProduct();
+            var productDto = ProductMock.GetValidProductsDto();
             var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
                 repo.GetProductByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(product);
 
-            var service = new ProductService(repository.Object);
+            mapper.Setup(mapper => mapper.Map<ProductViewModel>(product)).Returns(productDto);
+
+            var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
             var productData = await service.GetProductByIdAsync(product.Id);
 
             // Assert
-            productData.Should().BeOfType<ProductDto>();
+            productData.Should().BeOfType<ProductViewModel>();
+            productData.Should().BeEquivalentTo(productDto);
+        }
+
+
+        [Fact]
+        public async void Should_Ge_All_tProducts_And_Returned_By_Repository()
+        {
+            // Arrange
+            var products = new List<Product> { ProductMock.GetValidProduct() };
+            var productsDto = new List<ProductViewModel> { ProductMock.GetValidProductsDto() };
+            var pagination = new Pagination() { PageNumber = 1, PageSize = 1 };
+
+            var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
+
+            repository.Setup(repo =>
+                repo.GetProductsAsync(pagination))
+                .ReturnsAsync(products);
+
+            mapper.Setup(mapper => mapper.Map<IEnumerable<ProductViewModel>>(products)).Returns(productsDto);
+
+            var service = new ProductService(repository.Object, mapper.Object);
+
+            // Act
+            var productsData = await service.GetProductsAsync(pagination);
+
+            // Assert
+            productsData.Should().BeOfType<List<ProductViewModel>>();
+            productsData.Should().BeEquivalentTo(productsDto);
         }
 
         [Fact]
@@ -83,12 +119,13 @@ namespace Ordering.System.Tests.UnitTests
             // Arrange
             var product = ProductMock.GetValidProduct();
             var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
                 repo.DeleteProductAsync(It.IsAny<Product>()))
                 .ReturnsAsync(product);
 
-            var service = new ProductService(repository.Object);
+            var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
             var productData = await service.DeleteProductByIdAsync(product.Id);
@@ -102,12 +139,13 @@ namespace Ordering.System.Tests.UnitTests
         {
             // Arrange
             var repository = new Mock<IProductRepository>();
+            var mapper = new Mock<IMapper>();
 
             repository.Setup(repo =>
                 repo.ExistProductByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(true);
 
-            var service = new ProductService(repository.Object);
+            var service = new ProductService(repository.Object, mapper.Object);
 
             // Act
             var result = await service.ExistProductAsync(Guid.NewGuid());

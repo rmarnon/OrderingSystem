@@ -1,4 +1,4 @@
-﻿using Ordering.System.Api.Dtos;
+﻿using Ordering.System.Api.Models;
 using Ordering.System.Api.Entities;
 
 namespace Ordering.System.Tests.Mocks
@@ -27,7 +27,7 @@ namespace Ordering.System.Tests.Mocks
             };
         }
 
-        internal static ProductDto GetValidProductsDto()
+        internal static ProductViewModel GetValidProductsDto()
         {
             return new()
             {

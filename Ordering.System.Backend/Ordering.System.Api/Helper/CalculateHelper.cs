@@ -4,9 +4,9 @@ namespace Ordering.System.Api.Helper
 {
     internal static class CalculateHelper
     {
-        internal static double GetTotalValue(IEnumerable<OrderItem> products)
+        internal static double GetTotalValue(IEnumerable<OrderItem> items)
         {
-            return products.Sum(product => product.SubTotal);
+            return items.Sum(item => item.SubTotal);
         }
 
         internal static uint GetTotalQuantity(IEnumerable<OrderItem> items)

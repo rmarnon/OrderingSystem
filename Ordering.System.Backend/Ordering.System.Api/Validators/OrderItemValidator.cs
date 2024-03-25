@@ -3,9 +3,9 @@ using Ordering.System.Api.Entities;
 
 namespace Ordering.System.Api.Validators
 {
-    public class ValidateOrderItem : AbstractValidator<OrderItem>
+    public class OrderItemValidator : AbstractValidator<OrderItem>
     {
-        public ValidateOrderItem()
+        public OrderItemValidator()
         {
             ValidatePrice();
             ValidateQuantity();

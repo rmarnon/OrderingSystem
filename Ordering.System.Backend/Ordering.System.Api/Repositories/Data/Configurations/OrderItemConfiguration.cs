@@ -21,7 +21,7 @@ namespace Ordering.System.Api.Repositories.Data.Configurations
                 .HasForeignKey(p => p.ProductId);
 
             builder.HasOne(p => p.Order)
-                .WithMany(p => p.Products)
+                .WithMany(p => p.Items)
                 .HasForeignKey(p => p.OrderId);
         }
     }

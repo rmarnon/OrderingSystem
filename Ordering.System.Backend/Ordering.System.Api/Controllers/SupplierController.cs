@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
@@ -65,7 +66,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(Supplier), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateSupplier([FromBody][Required] Supplier supplier)
+        public async Task<IActionResult> CreateSupplier([FromBody][Required] SupplierInputModel supplier)
         {
             var entity = await _supplierService.CreateSupplierAsync(supplier);
             return entity is null
@@ -87,7 +88,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateSupplier([FromBody][Required] Supplier product)
+        public async Task<IActionResult> UpdateSupplier([FromBody][Required] SupplierInputModel product)
         {
             var entity = await _supplierService.UpdateSupplierAsync(product);
             return entity is null

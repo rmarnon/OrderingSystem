@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Ordering.System.Api.Controllers;
-using Ordering.System.Api.Dtos;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Entities;
 using Ordering.System.Api.Services.Interfaces;
 using Ordering.System.Api.Validators;
@@ -56,7 +56,7 @@ namespace Ordering.System.Tests.UnitTests
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
-            okResult.Value.Should().BeOfType<ProductDto>();
+            okResult.Value.Should().BeOfType<ProductViewModel>();
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace Ordering.System.Tests.UnitTests
             var pagination = new Pagination() { PageNumber = 1, PageSize = 5 };
             var product1 = ProductMock.GetValidProductsDto();
             var product2 = ProductMock.GetValidProductsDto();
-            var products = new List<ProductDto>() { product1, product2 };
+            var products = new List<ProductViewModel>() { product1, product2 };
 
             var service = new Mock<IProductService>();
             service.Setup(service => service.GetProductsAsync(It.IsAny<Pagination>())).ReturnsAsync(products);

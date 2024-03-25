@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
@@ -65,12 +66,12 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(typeof(Order), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateOrder([FromBody][Required] Order order)
+        public async Task<IActionResult> CreateOrder([FromBody][Required] OrderInputModel order)
         {
             var entity = await _orderService.CreateOrderAsync(order);
             return entity is null
                 ? Conflict("Já eiste um pedido cadastrado com esse ID.")
-                : Ok(order);
+                : Ok(entity);
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Ordering.System.Api.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateOrder([FromBody][Required] Order order)
+        public async Task<IActionResult> UpdateOrder([FromBody][Required] OrderInputModel order)
         {
             var entity = await _orderService.UpdateOrderAsync(order);
             return entity is null

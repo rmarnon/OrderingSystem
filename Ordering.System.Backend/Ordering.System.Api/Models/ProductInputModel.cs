@@ -1,7 +1,8 @@
-﻿namespace Ordering.System.Api.Dtos
+﻿namespace Ordering.System.Api.Models
 {
-    public class ProductDto
+    public class ProductInputModel
     {
+        public Guid Id { get; init; } = Guid.Empty;
         public string Code { get; init; }
         public double Value { get; init; }
         public string Description { get; init; }

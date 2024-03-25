@@ -14,10 +14,10 @@ namespace Ordering.System.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Value = table.Column<double>(type: "double precision", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -30,10 +30,10 @@ namespace Ordering.System.Api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Uf = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Cnpj = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    SocialReason = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Cnpj = table.Column<string>(type: "CHAR(14)", nullable: false),
+                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    SocialReason = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,10 +45,10 @@ namespace Ordering.System.Api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Quantity = table.Column<long>(type: "bigint", nullable: false),
                     TotalValue = table.Column<double>(type: "double precision", nullable: false),
-                    RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RequestDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     SupplierId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -63,26 +63,26 @@ namespace Ordering.System.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "OrderItems",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    Quantity = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: false)
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false),
+                    SubTotal = table.Column<double>(type: "double precision", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.Id);
+                    table.PrimaryKey("PK_OrderItems", x => new { x.OrderId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_Items_Orders_OrderId",
+                        name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Products_ProductId",
+                        name: "FK_OrderItems_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -90,13 +90,8 @@ namespace Ordering.System.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_OrderId",
-                table: "Items",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_ProductId",
-                table: "Items",
+                name: "IX_OrderItems_ProductId",
+                table: "OrderItems",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -108,7 +103,7 @@ namespace Ordering.System.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "Orders");

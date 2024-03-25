@@ -7,7 +7,7 @@
         public double TotalValue { get; set; }
         public DateTime RequestDate { get; set; }
         public Guid SupplierId { get; set; }
-        public Supplier Supplier { get; set; }
-        public virtual IEnumerable<OrderItem> Products { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual List<OrderItem> Items { get; set; } = new();
     }
 }

@@ -16,12 +16,6 @@ namespace Ordering.System.Api.Repositories.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.Property(p => p.Quantity)
-                .IsRequired();
-
-            builder.Property(p => p.TotalValue)
-                .IsRequired();
-
             builder.Property(p => p.RequestDate)
                 .HasDefaultValueSql("NOW()")
                 .IsRequired();

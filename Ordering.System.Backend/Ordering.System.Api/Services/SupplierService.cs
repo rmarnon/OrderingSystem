@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Ordering.System.Api.Dtos;
 using Ordering.System.Api.Entities;
-using Ordering.System.Api.Mappings;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services.Interfaces;
 
@@ -18,41 +17,40 @@ namespace Ordering.System.Api.Services
             _supplierRepository = productRepository;
         }
 
-        public async Task<SupplierDto> GetSupplierByIdAsync(Guid id)
+        public async Task<SupplierViewModel> GetSupplierByIdAsync(Guid id)
         {
             return await _supplierRepository.GetSupplierByIdAsync(id)
-                .ContinueWith(task => _mapper.Map<SupplierDto>(task.Result));
+                .ContinueWith(task => _mapper.Map<SupplierViewModel>(task.Result));
         }
 
-        public async Task<IEnumerable<SupplierDto>> GetSuppliersAsync(Pagination pagination)
+        public async Task<IEnumerable<SupplierViewModel>> GetSuppliersAsync(Pagination pagination)
         {
             return await _supplierRepository.GetSuppliersAsync(pagination)
-                .ContinueWith(task => _mapper.Map<IEnumerable<SupplierDto>>(task.Result));
+                .ContinueWith(task => _mapper.Map<IEnumerable<SupplierViewModel>>(task.Result));
         }
 
-        public async Task<Supplier> CreateSupplierAsync(Supplier supplier)
+        public async Task<Supplier> CreateSupplierAsync(SupplierInputModel supplier)
         {
             var exist = await _supplierRepository.ExistSupplierByIdAsync(supplier.Id);
 
             if (exist) return null;
 
-            return await _supplierRepository.CreateSupplierAsync(supplier);
+            var newSupplier = _mapper.Map<Supplier>(supplier);
+
+            return await _supplierRepository.CreateSupplierAsync(newSupplier);
         }
 
-        public async Task<Supplier> UpdateSupplierAsync(Supplier supplier)
+        public async Task<Supplier> UpdateSupplierAsync(SupplierInputModel supplier)
         {
-            var supplierData = await _supplierRepository.GetSupplierByIdAsync(supplier.Id);
+            var exist = await _supplierRepository.ExistSupplierByIdAsync(supplier.Id);
 
-            if (supplierData is null)
+            if (!exist)
                 return null;
 
-            supplierData.Uf = supplier.Uf;
-            supplierData.Name = supplier.Name;
-            supplierData.Cnpj = supplier.Cnpj;
-            supplierData.Email = supplier.Email.Trim();
-            supplierData.SocialReason = supplier.SocialReason.Trim();
+            var updatedSupplier = _mapper.Map<Supplier>(supplier);
+            updatedSupplier.Id = supplier.Id;
 
-            return await _supplierRepository.UpdateSupplierAsync(supplierData);
+            return await _supplierRepository.UpdateSupplierAsync(updatedSupplier);
         }
 
         public async Task<Supplier> DeletSupplierByIdAsync(Guid id)

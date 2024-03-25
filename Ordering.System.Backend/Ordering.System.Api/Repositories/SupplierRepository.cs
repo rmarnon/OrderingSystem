@@ -18,7 +18,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(supplier).State = EntityState.Added;
+                    _context.Suppliers.Add(supplier);
                     await _context.SaveChangesAsync();
                     return supplier;
                 }
@@ -35,7 +35,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(supplier).State = EntityState.Deleted;
+                    _context.Suppliers.Remove(supplier);
                     await _context.SaveChangesAsync();
                     return supplier;
                 }
@@ -56,21 +56,23 @@ namespace Ordering.System.Api.Repositories
             return await _context
                 .Suppliers
                 .AsQueryable()
-                .Include(x => x.Orders)
                 .AsNoTrackingWithIdentityResolution()
+                .Include(x => x.Orders).ThenInclude(y => y.Items)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Supplier>> GetSuppliersAsync(Pagination pagination)
         {
-            return await _context
+            var supplier = await _context
                 .Suppliers
                 .AsQueryable()
-                .Include(x => x.Orders)
                 .AsNoTrackingWithIdentityResolution()
+                .Include(x => x.Orders).ThenInclude(y => y.Items)
                 .Skip((pagination.PageNumber - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
                 .ToListAsync();
+
+            return supplier;
         }
 
         public async Task<Supplier> UpdateSupplierAsync(Supplier supplier)
@@ -79,7 +81,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(supplier).State = EntityState.Modified;
+                    _context.Suppliers.Update(supplier);
                     await _context.SaveChangesAsync();
                     return supplier;
                 }

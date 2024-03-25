@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 
 namespace Ordering.System.Api.Validators
 {
-    public class ProductValidator : AbstractValidator<Product>
+    public class ProductValidator : AbstractValidator<ProductInputModel>
     {
         public ProductValidator()
         {

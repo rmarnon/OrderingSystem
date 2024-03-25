@@ -18,7 +18,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(product).State = EntityState.Added;
+                    _context.Products.Add(product);
                     await _context.SaveChangesAsync();
                     return product;
                 }
@@ -35,7 +35,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(product).State = EntityState.Deleted;
+                    _context.Products.Remove(product);
                     await _context.SaveChangesAsync();
                     return product;
                 }
@@ -77,7 +77,7 @@ namespace Ordering.System.Api.Repositories
             {
                 using (_context)
                 {
-                    _context.Entry(product).State = EntityState.Modified;
+                    _context.Products.Update(product);
                     await _context.SaveChangesAsync();
                     return product;
                 }

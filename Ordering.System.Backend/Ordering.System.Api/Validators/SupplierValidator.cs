@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
-using Ordering.System.Api.Entities;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Validators.Rules;
 
 namespace Ordering.System.Api.Validators
 {
-    public class SupplierValidator : AbstractValidator<Supplier>
+    public class SupplierValidator : AbstractValidator<SupplierInputModel>
     {
         public SupplierValidator()
         {
@@ -54,7 +54,7 @@ namespace Ordering.System.Api.Validators
             RuleFor(x => x.Name)
                 .Must(WordsValidator.IsValidText)
                 .When(x => !string.IsNullOrWhiteSpace(x.Name))
-                .WithMessage("Campo 'Nome' aceita apenas letras.");
+                .WithMessage("Campo 'Nome' aceita apenas letras e números.");
         }
 
         private void ValidateCnpj()

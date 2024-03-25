@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Ordering.System.Api.Dtos;
 using Ordering.System.Api.Entities;
-using Ordering.System.Api.Mappings;
+using Ordering.System.Api.Models;
 using Ordering.System.Api.Repositories.Interfaces;
 using Ordering.System.Api.Services.Interfaces;
 
@@ -18,40 +17,39 @@ namespace Ordering.System.Api.Services
             _productRepository = productRepository;
         }
 
-        public async Task<ProductDto> GetProductByIdAsync(Guid id)
+        public async Task<ProductViewModel> GetProductByIdAsync(Guid id)
         {
             return await _productRepository.GetProductByIdAsync(id)
-                .ContinueWith(task => _mapper.Map<ProductDto>(task.Result));
+                .ContinueWith(task => _mapper.Map<ProductViewModel>(task.Result));
         }
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync(Pagination pagination)
+        public async Task<IEnumerable<ProductViewModel>> GetProductsAsync(Pagination pagination)
         {
             return await _productRepository.GetProductsAsync(pagination)
-                .ContinueWith(task => _mapper.Map<IEnumerable<ProductDto>>(task.Result));
+                .ContinueWith(task => _mapper.Map<IEnumerable<ProductViewModel>>(task.Result));
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<Product> CreateProductAsync(ProductInputModel product)
         {
             var exist = await _productRepository.ExistProductByIdAsync(product.Id);
 
             if (exist) return null;
 
-            return await _productRepository.CreateProductAsync(product);
+            var newProduct = _mapper.Map<Product>(product);
+
+            return await _productRepository.CreateProductAsync(newProduct);
         }
 
-        public async Task<Product> UpdateProductAsync(Product product)
+        public async Task<Product> UpdateProductAsync(ProductInputModel product)
         {
-            var productData = await _productRepository.GetProductByIdAsync(product.Id);
+            var exist = await _productRepository.ExistProductByIdAsync(product.Id);
 
-            if (productData is null)
-                return null;
+            if (!exist) return null;
 
-            productData.Value = product.Value;
-            productData.Code = product.Code.Trim();
-            productData.Description = product.Description.Trim();
-            productData.RegistrationDate = product.RegistrationDate;
+            var updatedProduct = _mapper.Map<Product>(product);
+            updatedProduct.Id = product.Id;
 
-            return await _productRepository.UpdateProductAsync(productData);
+            return await _productRepository.UpdateProductAsync(updatedProduct);
         }
 
         public async Task<Product> DeleteProductByIdAsync(Guid id)

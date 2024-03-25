@@ -29,13 +29,17 @@ namespace Ordering.System.Api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("RequestDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<Guid>("SupplierId")
                         .HasColumnType("uuid");
@@ -47,34 +51,31 @@ namespace Ordering.System.Api.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Ordering.System.Api.Entities.OrderItem", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
                     b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
                     b.Property<long>("Quantity")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.Property<double>("SubTotal")
+                        .HasColumnType("double precision");
 
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Items");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("Ordering.System.Api.Entities.Product", b =>
@@ -84,20 +85,26 @@ namespace Ordering.System.Api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Code")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Ordering.System.Api.Entities.Supplier", b =>
@@ -107,23 +114,30 @@ namespace Ordering.System.Api.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Cnpj")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("CHAR(14)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("SocialReason")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<int>("Uf")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("Ordering.System.Api.Entities.Order", b =>
@@ -140,7 +154,7 @@ namespace Ordering.System.Api.Migrations
             modelBuilder.Entity("Ordering.System.Api.Entities.OrderItem", b =>
                 {
                     b.HasOne("Ordering.System.Api.Entities.Order", "Order")
-                        .WithMany("Products")
+                        .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -158,7 +172,7 @@ namespace Ordering.System.Api.Migrations
 
             modelBuilder.Entity("Ordering.System.Api.Entities.Order", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Ordering.System.Api.Entities.Product", b =>
